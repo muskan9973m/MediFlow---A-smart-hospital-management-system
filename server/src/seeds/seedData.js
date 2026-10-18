@@ -1,0 +1,291 @@
+import bcrypt from 'bcryptjs';
+
+// Pre-hashed 'password123' with salt rounds 10
+export const DEFAULT_HASHED_PASSWORD = bcrypt.hashSync('password123', 10);
+
+export const SEED_USERS = [
+  {
+    id: "pat_9812",
+    name: "Muskan Singh",
+    email: "muskan.singh@example.com",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "patient",
+    phone: "+1 (555) 382-9014",
+    bloodGroup: "O+",
+    dob: "1996-08-14",
+    address: "742 Evergreen Terrace, Springfield",
+    emergencyContact: "Elena Singh (+1 555-0192)",
+    memberSince: "Jan 2024"
+  },
+  {
+    id: "doc_101",
+    name: "Dr. Sarah Jenkins, MD",
+    email: "sarah.jenkins@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "doctor",
+    phone: "+1 (555) 234-8891",
+    specialty: "Cardiologist",
+    department: "Cardiology",
+    experience: "14 years",
+    rating: 4.9,
+    reviewsCount: 184,
+    consultationDurationMin: 20,
+    availableDays: ["Monday", "Wednesday", "Friday"],
+    availableTime: "09:00 AM - 02:00 PM",
+    room: "Room 204 - Wing B",
+    bio: "Board-certified cardiologist specializing in preventive cardiology and heart rhythm disorders."
+  },
+  {
+    id: "doc_102",
+    name: "Dr. Marcus Chen, MD, PhD",
+    email: "marcus.chen@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "doctor",
+    phone: "+1 (555) 345-9912",
+    specialty: "Neurologist",
+    department: "Neurology",
+    experience: "11 years",
+    rating: 4.8,
+    reviewsCount: 142,
+    consultationDurationMin: 25,
+    availableDays: ["Tuesday", "Thursday", "Saturday"],
+    availableTime: "10:00 AM - 03:00 PM",
+    room: "Room 312 - Wing A",
+    bio: "Expert in neuro-diagnostics, migraines, and cognitive wellness therapy."
+  },
+  {
+    id: "doc_103",
+    name: "Dr. Sophia Patel, MBBS, MD",
+    email: "sophia.patel@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "doctor",
+    phone: "+1 (555) 456-1234",
+    specialty: "General Physician",
+    department: "General Medicine",
+    experience: "9 years",
+    rating: 4.9,
+    reviewsCount: 310,
+    consultationDurationMin: 15,
+    availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    availableTime: "08:30 AM - 01:30 PM",
+    room: "OPD Desk 4",
+    bio: "Primary care physician dedicated to routine check-ups and chronic symptom control."
+  },
+  {
+    id: "doc_104",
+    name: "Dr. Rachel Adams, MS",
+    email: "rachel.adams@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "doctor",
+    phone: "+1 (555) 567-4321",
+    specialty: "Orthopedic Surgeon",
+    department: "Orthopedics",
+    experience: "16 years",
+    rating: 4.7,
+    reviewsCount: 198,
+    consultationDurationMin: 20,
+    availableDays: ["Monday", "Wednesday", "Thursday"],
+    availableTime: "11:00 AM - 04:00 PM",
+    room: "Room 108 - Wing C",
+    bio: "Specializes in joint restoration, sports injury rehabilitation, and bone trauma."
+  },
+  {
+    id: "adm_001",
+    name: "Chief Admin Reynolds",
+    email: "admin@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "admin",
+    phone: "+1 (555) 999-0011",
+    department: "Hospital Administration"
+  }
+];
+
+export const SEED_DEPARTMENTS = [
+  { id: "dept_cardio", name: "Cardiology", icon: "HeartPulse", head: "Dr. Sarah Jenkins", totalDoctors: 6, room: "Wing B - 2nd Floor", description: "Comprehensive cardiovascular diagnostics, ECG, and heart rhythm care." },
+  { id: "dept_neuro", name: "Neurology", icon: "Brain", head: "Dr. Marcus Chen", totalDoctors: 4, room: "Wing A - 3rd Floor", description: "Neurological evaluations, migraine clinics, and neuromuscular therapy." },
+  { id: "dept_ortho", name: "Orthopedics", icon: "Bone", head: "Dr. Rachel Adams", totalDoctors: 5, room: "Wing C - 1st Floor", description: "Joint repair, sports injury rehabilitation, and bone trauma recovery." },
+  { id: "dept_ped", name: "Pediatrics", icon: "Baby", head: "Dr. David Kim", totalDoctors: 7, room: "Wing B - 1st Floor", description: "Infant and adolescent wellness, vaccinations, and pediatric medicine." },
+  { id: "dept_gen", name: "General Medicine", icon: "Stethoscope", head: "Dr. Sophia Patel", totalDoctors: 9, room: "Main OPD - Ground", description: "Primary care checkups, preventive screenings, and routine diagnostics." },
+  { id: "dept_derma", name: "Dermatology", icon: "Sparkles", head: "Dr. Liam Walker", totalDoctors: 3, room: "Wing A - 2nd Floor", description: "Skin health, dermatological therapies, and allergy assessments." }
+];
+
+export const SEED_DOCTORS = [
+  {
+    id: "doc_101",
+    userId: "doc_101",
+    name: "Dr. Sarah Jenkins, MD",
+    email: "sarah.jenkins@mediflow.org",
+    specialty: "Cardiologist",
+    department: "Cardiology",
+    experience: "14 years",
+    rating: 4.9,
+    reviewsCount: 184,
+    consultationDurationMin: 20,
+    availableDays: ["Monday", "Wednesday", "Friday"],
+    availableTime: "09:00 AM - 02:00 PM",
+    room: "Room 204 - Wing B",
+    bio: "Board-certified cardiologist specializing in preventive cardiology and heart rhythm disorders."
+  },
+  {
+    id: "doc_102",
+    userId: "doc_102",
+    name: "Dr. Marcus Chen, MD, PhD",
+    email: "marcus.chen@mediflow.org",
+    specialty: "Neurologist",
+    department: "Neurology",
+    experience: "11 years",
+    rating: 4.8,
+    reviewsCount: 142,
+    consultationDurationMin: 25,
+    availableDays: ["Tuesday", "Thursday", "Saturday"],
+    availableTime: "10:00 AM - 03:00 PM",
+    room: "Room 312 - Wing A",
+    bio: "Expert in neuro-diagnostics, migraines, and cognitive wellness therapy."
+  },
+  {
+    id: "doc_103",
+    userId: "doc_103",
+    name: "Dr. Sophia Patel, MBBS, MD",
+    email: "sophia.patel@mediflow.org",
+    specialty: "General Physician",
+    department: "General Medicine",
+    experience: "9 years",
+    rating: 4.9,
+    reviewsCount: 310,
+    consultationDurationMin: 15,
+    availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    availableTime: "08:30 AM - 01:30 PM",
+    room: "OPD Desk 4",
+    bio: "Primary care physician dedicated to routine check-ups and chronic symptom control."
+  },
+  {
+    id: "doc_104",
+    userId: "doc_104",
+    name: "Dr. Rachel Adams, MS",
+    email: "rachel.adams@mediflow.org",
+    specialty: "Orthopedic Surgeon",
+    department: "Orthopedics",
+    experience: "16 years",
+    rating: 4.7,
+    reviewsCount: 198,
+    consultationDurationMin: 20,
+    availableDays: ["Monday", "Wednesday", "Thursday"],
+    availableTime: "11:00 AM - 04:00 PM",
+    room: "Room 108 - Wing C",
+    bio: "Specializes in joint restoration, sports injury rehabilitation, and bone trauma."
+  }
+];
+
+export const SEED_APPOINTMENTS = [];
+
+export const SEED_QUEUE = [];
+
+export const SEED_PATIENT_RECORDS = {
+  "pat_9812": {
+    patientId: "pat_9812",
+    fullName: "Muskan Singh",
+    dob: "1996-08-14",
+    age: 29,
+    gender: "Female",
+    bloodGroup: "O+",
+    height: "--",
+    weight: "--",
+    bmi: "--",
+    phone: "+91 98765 43210",
+    email: "muskan.singh@example.com",
+    emergencyContact: {
+      name: "Elena Singh",
+      relation: "Sister",
+      phone: "+91 98765 00000"
+    },
+    allergies: [],
+    chronicConditions: [],
+    activeMedications: [],
+    vitalsHistory: [],
+    labReports: []
+  }
+};
+
+export const SEED_NOTIFICATIONS = [];
+
+export const SEED_TRIAGE_RULES = [
+  {
+    id: "sym_chest",
+    keywords: ["chest pain", "tightness", "palpitation", "heart", "shortness of breath", "angina"],
+    urgency: "urgent",
+    recommendation: "Emergency / Cardiology OPD",
+    primaryDept: "Cardiology",
+    suggestedDoctor: "Dr. Sarah Jenkins, MD",
+    guidance: "⚠️ Sudden severe chest pressure or radiating pain requires IMMEDIATE emergency triage. For mild or intermittent palpitations without distress, consult Cardiology OPD."
+  },
+  {
+    id: "sym_neuro",
+    keywords: ["headache", "migraine", "dizziness", "numbness", "tingling", "vertigo", "seizure", "memory"],
+    urgency: "moderate",
+    recommendation: "Neurology Department",
+    primaryDept: "Neurology",
+    suggestedDoctor: "Dr. Marcus Chen, MD, PhD",
+    guidance: "For recurrent migraines, visual auras, or peripheral tingling, a comprehensive neurological exam with Dr. Marcus Chen is recommended. Sudden severe thunderclap headache warrants immediate ER."
+  },
+  {
+    id: "sym_ortho",
+    keywords: ["joint", "knee", "bone", "fracture", "back pain", "shoulder", "sprain", "swelling", "ligament"],
+    urgency: "moderate",
+    recommendation: "Orthopedics Department",
+    primaryDept: "Orthopedics",
+    suggestedDoctor: "Dr. Rachel Adams, MS",
+    guidance: "For chronic joint stiffness, sports injury recovery, or spinal alignment, schedule a consultation with Dr. Rachel Adams in Orthopedics. X-Ray imaging is available in Wing C."
+  },
+  {
+    id: "sym_ped",
+    keywords: ["child", "infant", "toddler", "pediatric", "fever in kid", "vaccination", "baby"],
+    urgency: "moderate",
+    recommendation: "Pediatrics Department",
+    primaryDept: "Pediatrics",
+    suggestedDoctor: "Dr. David Kim",
+    guidance: "Dedicated pediatric wing provides routine developmental screenings, immunization, and childhood acute fever management."
+  },
+  {
+    id: "sym_general",
+    keywords: ["fever", "cough", "cold", "flu", "fatigue", "routine", "annual checkup", "weakness"],
+    urgency: "routine",
+    recommendation: "General Medicine / Primary Care",
+    suggestedDoctor: "Dr. Sophia Patel, MBBS, MD",
+    guidance: "Primary care physicians can perform comprehensive preventive checkups, prescribe lab tests, and coordinate specialist referrals."
+  },
+  {
+    id: "sym_derma",
+    keywords: ["rash", "skin", "acne", "mole", "itching", "eczema", "allergy on skin"],
+    urgency: "routine",
+    recommendation: "Dermatology Department",
+    suggestedDoctor: "Dr. Liam Walker",
+    guidance: "Consult Dermatology for diagnostic skin exams, mole evaluations, and targeted topical treatments."
+  }
+];
+
+export const SEED_FAQ_RESPONSES = [
+  {
+    keywords: ["timing", "hours", "open", "schedule"],
+    answer: "MediFlow Hospital OPD operates Monday through Saturday, from 8:00 AM to 8:00 PM. The Emergency & Trauma Centre is available 24/7 with immediate critical triage."
+  },
+  {
+    keywords: ["book", "appointment", "schedule", "how to book"],
+    answer: "You can book an appointment directly from your Patient Dashboard by clicking the 'Book Appointment' button. Choose your desired department, select an available doctor, pick a convenient time slot, and confirm."
+  },
+  {
+    keywords: ["queue", "waiting", "token", "track"],
+    answer: "Our Live Queue tracker updates in real-time. When you have an appointment today, your unique Queue Token appears on the dashboard with the current serving token and estimated waiting time."
+  },
+  {
+    keywords: ["emergency", "urgent", "ambulance", "serious"],
+    answer: "⚠️ If you or someone nearby is experiencing a life-threatening medical emergency (chest pain, shortness of breath, severe trauma), please call your local emergency number (e.g. 911 / 112) or head immediately to our 24/7 Emergency Wing."
+  },
+  {
+    keywords: ["cancel", "reschedule", "change"],
+    answer: "You can reschedule or cancel an appointment up to 2 hours prior to the scheduled slot under the 'Recent Appointments' section in your dashboard."
+  },
+  {
+    keywords: ["doctor", "specialist", "departments"],
+    answer: "MediFlow hosts 6 specialized departments: Cardiology, Neurology, Orthopedics, Pediatrics, Dermatology, and General Medicine, led by board-certified physicians."
+  }
+];

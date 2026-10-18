@@ -1,0 +1,17 @@
+{
+  "name": "mediflow",
+  "version": "1.0.0",
+  "description": "MediFlow - Hospital OPD Queue Management & Clinical Portal (Full-Stack)",
+  "scripts": {
+    "start": "node server/src/index.js",
+    "server": "node --watch server/src/index.js",
+    "client": "npm --prefix client run dev",
+    "dev:server": "node --watch server/src/index.js",
+    "dev:client": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "install:all": "npm --prefix server install && npm --prefix client install"
+  },
+  "keywords": ["hospital", "opd", "queue", "clinical", "react", "express"],
+  "author": "MediFlow Team",
+  "license": "ISC"
+}
