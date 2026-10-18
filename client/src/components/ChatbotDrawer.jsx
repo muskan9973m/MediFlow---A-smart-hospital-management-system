@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Bot, X, Send, Sparkles, AlertTriangle, User, RotateCcw } from 'lucide-react';
-import { MOCK_FAQ_RESPONSES } from '../data/mockData';
+import { MOCK_FAQ_RESPONSES, MOCK_SYMPTOM_TRIAGE } from '../data/mockData';
 import { aiAPI } from '../services/api';
 
 export default function ChatbotDrawer() {
@@ -72,19 +72,32 @@ export default function ChatbotDrawer() {
       const lower = query.toLowerCase();
       let matchedResponse = null;
 
-      if (lower.includes("emergency") || lower.includes("chest pain") || lower.includes("tightness") || lower.includes("severe")) {
-        matchedResponse = "⚠️ MEDICAL ALERT: If you or someone with you is experiencing severe symptoms, sudden chest pain, or breathing distress, do NOT rely on online chat. Please immediately contact your local emergency services (911/112) or proceed to MediFlow 24/7 Emergency Wing.";
+      // 1. Emergency detection
+      if (lower.includes("emergency") || lower.includes("chest pain") || lower.includes("tightness") || lower.includes("cannot breathe") || lower.includes("severe")) {
+        matchedResponse = "⚠️ MEDICAL ALERT: If you or someone with you is experiencing severe distress, sudden chest pain, or breathing difficulty, please proceed immediately to MediFlow's 24/7 Emergency Wing or call emergency services (911/112).";
       } else {
+        // 2. Hospital FAQs
         for (const item of MOCK_FAQ_RESPONSES) {
           if (item.keywords.some(k => lower.includes(k))) {
             matchedResponse = item.answer;
             break;
           }
         }
+
+        // 3. Clinical Symptom Triage Check
+        if (!matchedResponse) {
+          for (const rule of MOCK_SYMPTOM_TRIAGE) {
+            if (rule.keywords.some(k => lower.includes(k.toLowerCase()))) {
+              matchedResponse = `🩺 Clinical Recommendation: Your symptoms indicate a consultation in ${rule.primaryDept}. We recommend scheduling an appointment under ${rule.recommendation}. ${rule.guidance}`;
+              break;
+            }
+          }
+        }
       }
 
+      // 4. Helpful fallback
       if (!matchedResponse) {
-        matchedResponse = "I can help you with hospital timings, doctor availability, appointment bookings, and live queue status. For medical advice, please consult one of our licensed physicians directly.";
+        matchedResponse = "I can guide you with hospital timings, OPD doctor availability, live queue tracking, and symptom guidance across our 6 specialties (Cardiology, Neurology, Orthopedics, Pediatrics, Dermatology, General Medicine). How can I assist you further?";
       }
 
       const botReply = {
