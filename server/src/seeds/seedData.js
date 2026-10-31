@@ -90,6 +90,42 @@ export const SEED_USERS = [
     bio: "Specializes in joint restoration, sports injury rehabilitation, and bone trauma."
   },
   {
+    id: "doc_105",
+    name: "Dr. David Kim, MD, FAAP",
+    email: "david.kim@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "doctor",
+    phone: "+1 (555) 678-9012",
+    specialty: "Pediatrician",
+    department: "Pediatrics",
+    experience: "12 years",
+    rating: 4.9,
+    reviewsCount: 220,
+    consultationDurationMin: 15,
+    availableDays: ["Monday", "Tuesday", "Wednesday", "Friday"],
+    availableTime: "09:00 AM - 01:00 PM",
+    room: "Room 102 - Wing B",
+    bio: "Compassionate pediatrician committed to infant wellness, developmental screenings, and immunizations."
+  },
+  {
+    id: "doc_106",
+    name: "Dr. Liam Walker, MD",
+    email: "liam.walker@mediflow.org",
+    password: DEFAULT_HASHED_PASSWORD,
+    role: "doctor",
+    phone: "+1 (555) 789-0123",
+    specialty: "Dermatologist",
+    department: "Dermatology",
+    experience: "10 years",
+    rating: 4.8,
+    reviewsCount: 165,
+    consultationDurationMin: 20,
+    availableDays: ["Tuesday", "Wednesday", "Thursday"],
+    availableTime: "10:30 AM - 03:30 PM",
+    room: "Room 208 - Wing A",
+    bio: "Specialist in dermatological treatments, acne therapies, mole evaluations, and skin allergy management."
+  },
+  {
     id: "adm_001",
     name: "Chief Admin Reynolds",
     email: "admin@mediflow.org",
@@ -124,7 +160,8 @@ export const SEED_DOCTORS = [
     availableDays: ["Monday", "Wednesday", "Friday"],
     availableTime: "09:00 AM - 02:00 PM",
     room: "Room 204 - Wing B",
-    bio: "Board-certified cardiologist specializing in preventive cardiology and heart rhythm disorders."
+    bio: "Board-certified cardiologist specializing in preventive cardiology and heart rhythm disorders.",
+    image: "/doctors/dr_sarah_jenkins.jpg"
   },
   {
     id: "doc_102",
@@ -140,7 +177,8 @@ export const SEED_DOCTORS = [
     availableDays: ["Tuesday", "Thursday", "Saturday"],
     availableTime: "10:00 AM - 03:00 PM",
     room: "Room 312 - Wing A",
-    bio: "Expert in neuro-diagnostics, migraines, and cognitive wellness therapy."
+    bio: "Expert in neuro-diagnostics, migraines, and cognitive wellness therapy.",
+    image: "/doctors/dr_marcus_chen.jpg"
   },
   {
     id: "doc_103",
@@ -156,7 +194,8 @@ export const SEED_DOCTORS = [
     availableDays: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
     availableTime: "08:30 AM - 01:30 PM",
     room: "OPD Desk 4",
-    bio: "Primary care physician dedicated to routine check-ups and chronic symptom control."
+    bio: "Primary care physician dedicated to routine check-ups and chronic symptom control.",
+    image: "/doctors/dr_sophia_patel.jpg"
   },
   {
     id: "doc_104",
@@ -172,7 +211,42 @@ export const SEED_DOCTORS = [
     availableDays: ["Monday", "Wednesday", "Thursday"],
     availableTime: "11:00 AM - 04:00 PM",
     room: "Room 108 - Wing C",
-    bio: "Specializes in joint restoration, sports injury rehabilitation, and bone trauma."
+    bio: "Specializes in joint restoration, sports injury rehabilitation, and bone trauma.",
+    image: "/doctors/dr_rachel_adams.jpg"
+  },
+  {
+    id: "doc_105",
+    userId: "doc_105",
+    name: "Dr. David Kim, MD, FAAP",
+    email: "david.kim@mediflow.org",
+    specialty: "Pediatrician",
+    department: "Pediatrics",
+    experience: "12 years",
+    rating: 4.9,
+    reviewsCount: 220,
+    consultationDurationMin: 15,
+    availableDays: ["Monday", "Tuesday", "Wednesday", "Friday"],
+    availableTime: "09:00 AM - 01:00 PM",
+    room: "Room 102 - Wing B",
+    bio: "Compassionate pediatrician committed to infant wellness, developmental screenings, and immunizations.",
+    image: "/doctors/dr_david_kim.jpg"
+  },
+  {
+    id: "doc_106",
+    userId: "doc_106",
+    name: "Dr. Liam Walker, MD",
+    email: "liam.walker@mediflow.org",
+    specialty: "Dermatologist",
+    department: "Dermatology",
+    experience: "10 years",
+    rating: 4.8,
+    reviewsCount: 165,
+    consultationDurationMin: 20,
+    availableDays: ["Tuesday", "Wednesday", "Thursday"],
+    availableTime: "10:30 AM - 03:30 PM",
+    room: "Room 208 - Wing A",
+    bio: "Specialist in dermatological treatments, acne therapies, mole evaluations, and skin allergy management.",
+    image: "/doctors/dr_liam_walker.jpg"
   }
 ];
 

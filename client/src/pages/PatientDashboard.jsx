@@ -475,13 +475,31 @@ export default function PatientDashboard() {
                     ★ {doc.rating}
                   </span>
                 </div>
-                <h4 className="font-bold text-sm text-slate-900 dark:text-white font-['Outfit']">
-                  {doc.name}
-                </h4>
-                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  {doc.specialty} • {doc.experience}
-                </p>
-                <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-2 line-clamp-2">
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-xs shrink-0">
+                    <img
+                      src={doc.image}
+                      alt={doc.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h4 className="font-bold text-sm text-slate-900 dark:text-white font-['Outfit'] truncate">
+                      {doc.name}
+                    </h4>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                      {doc.specialty}
+                    </p>
+                    <p className="text-[10px] text-medical-600 dark:text-medical-400 font-medium">
+                      {doc.experience} exp.
+                    </p>
+                  </div>
+                </div>
+
+                <p className="text-[11px] text-slate-600 dark:text-slate-300 mt-1 line-clamp-2">
                   {doc.bio}
                 </p>
               </div>

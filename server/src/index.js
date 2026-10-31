@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { Server } from 'socket.io';
 
-import './config/db.js'; // initialize persistent database
+import { connectMongo } from './config/db.js';
 import { initSocket } from './socket/queueSocket.js';
 
 import authRoutes from './routes/authRoutes.js';
@@ -72,7 +72,7 @@ app.use(globalErrorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-server.listen(PORT, () => {
+server.listen(PORT, async () => {
   console.log(`
 ==========================================================
 🏥 MediFlow Hospital OPD & Clinical API Server
@@ -82,4 +82,5 @@ server.listen(PORT, () => {
 🩺 Health Check: http://localhost:${PORT}/api/health
 ==========================================================
   `);
+  await connectMongo();
 });

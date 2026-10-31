@@ -27,6 +27,8 @@ const DEPT_QUEUES = {
     currentNum: 0,
     patientNum: 0,
     doctor: "Dr. Sarah Jenkins, MD",
+    specialty: "Cardiologist",
+    image: "/doctors/dr_sarah_jenkins.jpg",
     room: "Room 204 - Wing B",
     avgMin: 15,
     floor: "2nd Floor, Wing B (Take Elevator 2)"
@@ -36,6 +38,8 @@ const DEPT_QUEUES = {
     currentNum: 0,
     patientNum: 0,
     doctor: "Dr. Marcus Chen, MD",
+    specialty: "Neurologist",
+    image: "/doctors/dr_marcus_chen.jpg",
     room: "Room 312 - Wing A",
     avgMin: 20,
     floor: "3rd Floor, Wing A (Follow Blue Line)"
@@ -45,6 +49,8 @@ const DEPT_QUEUES = {
     currentNum: 0,
     patientNum: 0,
     doctor: "Dr. Rachel Adams, MS",
+    specialty: "Orthopedic Surgeon",
+    image: "/doctors/dr_rachel_adams.jpg",
     room: "Room 108 - Wing C",
     avgMin: 18,
     floor: "1st Floor, Wing C (Adjacent to Radiology)"
@@ -54,6 +60,8 @@ const DEPT_QUEUES = {
     currentNum: 0,
     patientNum: 0,
     doctor: "Dr. David Kim, MD",
+    specialty: "Pediatrician",
+    image: "/doctors/dr_david_kim.jpg",
     room: "Room 102 - Wing B",
     avgMin: 12,
     floor: "1st Floor, Wing B (Kids Play Zone)"
@@ -63,6 +71,8 @@ const DEPT_QUEUES = {
     currentNum: 0,
     patientNum: 0,
     doctor: "Dr. Sophia Patel, MBBS",
+    specialty: "General Physician",
+    image: "/doctors/dr_sophia_patel.jpg",
     room: "OPD Desk 4 - Ground Floor",
     avgMin: 10,
     floor: "Ground Floor Main Atrium"
@@ -296,24 +306,42 @@ export default function LiveQueuePage() {
       )}
 
       {/* Department Tabs Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+      <div className="flex items-center gap-2.5 overflow-x-auto pb-2 scrollbar-none">
         {Object.keys(DEPT_QUEUES).map((dept) => {
           const isSelected = selectedDept === dept;
+          const deptInfo = DEPT_QUEUES[dept];
           return (
             <button
               key={dept}
               onClick={() => setSelectedDept(dept)}
-              className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 ${
+              className={`px-3.5 py-2 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2.5 group ${
                 isSelected
-                  ? 'bg-navy-900 text-white dark:bg-medical-600 shadow-md'
-                  : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50'
+                  ? 'bg-navy-900 text-white dark:bg-medical-600 shadow-md ring-2 ring-medical-500/40'
+                  : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200/80 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-750'
               }`}
             >
-              <span>{dept}</span>
-              <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-mono ${
+              <img
+                src={deptInfo.image}
+                alt={deptInfo.doctor}
+                className={`w-7 h-7 rounded-xl object-cover border ${
+                  isSelected ? 'border-medical-300 shadow-xs' : 'border-slate-200 dark:border-slate-600'
+                }`}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              <div className="text-left">
+                <span className="block leading-tight">{dept}</span>
+                <span className={`text-[10px] font-medium block leading-tight ${
+                  isSelected ? 'text-tealAccent-200' : 'text-slate-400'
+                }`}>
+                  {deptInfo.doctor.split(',')[0]}
+                </span>
+              </div>
+              <span className={`px-1.5 py-0.5 rounded-md text-[10px] font-mono ml-0.5 ${
                 isSelected ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300'
               }`}>
-                {DEPT_QUEUES[dept].prefix}
+                {deptInfo.prefix}
               </span>
             </button>
           );
@@ -338,9 +366,20 @@ export default function LiveQueuePage() {
             </div>
           </div>
 
-          <div className="text-left md:text-right text-xs text-slate-400">
-            <p className="font-semibold text-slate-300">{activeDeptInfo.doctor}</p>
-            <p className="text-medical-400 font-mono mt-0.5">{activeDeptInfo.room}</p>
+          <div className="flex items-center gap-3 bg-slate-800/80 px-4 py-2 rounded-2xl border border-slate-700">
+            <img
+              src={activeDeptInfo.image}
+              alt={activeDeptInfo.doctor}
+              className="w-11 h-11 rounded-xl object-cover border-2 border-medical-400 shadow-md shrink-0"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+            <div className="text-left text-xs">
+              <p className="font-bold text-slate-100">{activeDeptInfo.doctor}</p>
+              <p className="text-tealAccent-400 font-medium text-[11px]">{activeDeptInfo.specialty}</p>
+              <p className="text-slate-400 font-mono text-[10px] mt-0.5">{activeDeptInfo.room}</p>
+            </div>
           </div>
         </div>
 

@@ -1,8 +1,26 @@
 import axios from 'axios';
 import { io } from 'socket.io-client';
+import { getDoctorImage } from '../data/mockData';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://mediflow-backend-txp0.onrender.com/';
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'https://mediflow-backend-txp0.onrender.com/';
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+  if (envUrl) {
+    const trimmed = envUrl.replace(/\/+$/, '');
+    return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
+  }
+  return 'https://mediflow-backend-txp0.onrender.com/api';
+};
+
+const getSocketUrl = () => {
+  const envUrl = import.meta.env.VITE_SOCKET_URL;
+  if (envUrl) {
+    return envUrl.replace(/\/+$/, '');
+  }
+  return 'https://mediflow-backend-txp0.onrender.com';
+};
+
+const API_BASE_URL = getApiBaseUrl();
+const SOCKET_URL = getSocketUrl();
 
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -85,10 +103,22 @@ export const authAPI = {
 export const appointmentAPI = {
   getAll: async (params) => {
     const res = await apiClient.get('/appointments', { params });
+    if (res.data?.appointments && Array.isArray(res.data.appointments)) {
+      res.data.appointments = res.data.appointments.map(a => ({
+        ...a,
+        doctorImage: a.doctorImage || getDoctorImage(a.doctorId || a.doctorName)
+      }));
+    }
     return res.data;
   },
   getById: async (id) => {
     const res = await apiClient.get(`/appointments/${id}`);
+    if (res.data?.appointment) {
+      res.data.appointment = {
+        ...res.data.appointment,
+        doctorImage: res.data.appointment.doctorImage || getDoctorImage(res.data.appointment.doctorId || res.data.appointment.doctorName)
+      };
+    }
     return res.data;
   },
   create: async (appointmentData) => {
@@ -112,6 +142,12 @@ export const appointmentAPI = {
 export const queueAPI = {
   getLiveQueue: async (params) => {
     const res = await apiClient.get('/queue', { params });
+    if (res.data?.queue && Array.isArray(res.data.queue)) {
+      res.data.queue = res.data.queue.map(q => ({
+        ...q,
+        doctorImage: q.doctorImage || getDoctorImage(q.doctorId || q.doctor)
+      }));
+    }
     return res.data;
   },
   callNextToken: async (data) => {
@@ -127,14 +163,36 @@ export const queueAPI = {
 export const doctorAPI = {
   getAll: async (params) => {
     const res = await apiClient.get('/doctors', { params });
+    if (res.data?.doctors && Array.isArray(res.data.doctors)) {
+      res.data.doctors = res.data.doctors.map(d => ({
+        ...d,
+        image: d.image || getDoctorImage(d)
+      }));
+    }
     return res.data;
   },
   getById: async (id) => {
     const res = await apiClient.get(`/doctors/${id}`);
+    if (res.data?.doctor) {
+      res.data.doctor = {
+        ...res.data.doctor,
+        image: res.data.doctor.image || getDoctorImage(res.data.doctor)
+      };
+    }
     return res.data;
   },
   getDepartments: async () => {
     const res = await apiClient.get('/doctors/departments');
+    if (res.data?.departments && Array.isArray(res.data.departments)) {
+      res.data.departments = res.data.departments.map(dept => ({
+        ...dept,
+        headImage: dept.headImage || getDoctorImage(dept.head || dept.name)
+      }));
+    }
+    return res.data;
+  },
+  updateStatus: async (id, status) => {
+    const res = await apiClient.patch(`/doctors/${id}/status`, { status });
     return res.data;
   }
 };
@@ -168,6 +226,10 @@ export const patientAPI = {
 export const adminAPI = {
   getAnalytics: async () => {
     const res = await apiClient.get('/admin/analytics');
+    return res.data;
+  },
+  publishBroadcast: async (broadcastData) => {
+    const res = await apiClient.post('/admin/broadcast', broadcastData);
     return res.data;
   }
 };

@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import mongoose from 'mongoose';
 import {
   SEED_USERS,
   SEED_DEPARTMENTS,
@@ -13,10 +15,33 @@ import {
   SEED_FAQ_RESPONSES
 } from '../seeds/seedData.js';
 
+dotenv.config();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DATA_DIR = path.resolve(__dirname, '../data');
 const STORE_FILE = path.join(DATA_DIR, 'store.json');
+
+export async function connectMongo() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    console.log('ℹ️ MONGODB_URI not specified; using persistent JSON store (store.json)');
+    return false;
+  }
+  try {
+    console.log('🔄 Attempting MongoDB Atlas connection...');
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
+    console.log('✅ MongoDB Atlas successfully connected!');
+    return true;
+  } catch (err) {
+    console.warn('⚠️ MongoDB Atlas connection error:', err.message);
+    if (err.message?.includes('whitelisted') || err.message?.includes('SSL') || err.message?.includes('alert number 80')) {
+      console.warn('💡 Tip: Whitelist your IP in MongoDB Atlas: Security -> Network Access -> Add IP Address (or 0.0.0.0/0).');
+    }
+    console.log('ℹ️ Gracefully continuing with local persistent store (store.json)');
+    return false;
+  }
+}
 
 class DatabaseStore {
   constructor() {

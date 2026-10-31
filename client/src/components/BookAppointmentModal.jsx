@@ -226,6 +226,24 @@ export default function BookAppointmentModal({ isOpen, onClose, onBookingSuccess
                     </option>
                   ))}
                 </select>
+                {selectedDoctor && (() => {
+                  const doc = doctors.find(d => d.id === selectedDoctor);
+                  if (!doc) return null;
+                  return (
+                    <div className="mt-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-750 border border-slate-200 dark:border-slate-700 flex items-center gap-3">
+                      <img
+                        src={doc.image}
+                        alt={doc.name}
+                        className="w-10 h-10 rounded-lg object-cover border border-slate-200 dark:border-slate-600 shrink-0"
+                        onError={(e) => { e.target.style.display = 'none'; }}
+                      />
+                      <div className="min-w-0 flex-1 text-xs">
+                        <p className="font-bold text-slate-900 dark:text-white truncate">{doc.name}</p>
+                        <p className="text-[11px] text-medical-600 dark:text-medical-400 font-medium truncate">{doc.specialty} • {doc.room}</p>
+                      </div>
+                    </div>
+                  );
+                })()}
                 {errors.doctor && <p className="text-rose-500 text-xs mt-1">{errors.doctor}</p>}
               </div>
 

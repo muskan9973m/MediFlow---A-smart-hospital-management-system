@@ -134,13 +134,23 @@ export default function DoctorsPage() {
             <button
               key={dept.id}
               onClick={() => setSelectedDept(dept.name)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+              className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap flex items-center gap-1.5 ${
                 selectedDept === dept.name
                   ? 'bg-medical-600 text-white shadow-xs'
                   : 'bg-slate-100 dark:bg-slate-750 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
               }`}
             >
-              {dept.name}
+              {dept.headImage && (
+                <img
+                  src={dept.headImage}
+                  alt={dept.head}
+                  className="w-4 h-4 rounded-full object-cover"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+              )}
+              <span>{dept.name}</span>
             </button>
           ))}
         </div>
@@ -169,9 +179,20 @@ export default function DoctorsPage() {
               {/* Doctor Header */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-medical-600 to-tealAccent-500 text-white flex items-center justify-center font-bold text-lg shadow-md shrink-0">
-                    {doc.name.split(' ')[1]?.[0] || 'D'}
-                    {doc.name.split(' ')[2]?.[0] || 'R'}
+                  <div className="relative w-14 h-14 rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 shadow-md shrink-0">
+                    <img
+                      src={doc.image}
+                      alt={doc.name}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        if (e.target.nextElementSibling) e.target.nextElementSibling.style.display = 'flex';
+                      }}
+                    />
+                    <div className="hidden w-full h-full bg-gradient-to-tr from-medical-600 to-tealAccent-500 text-white items-center justify-center font-bold text-lg">
+                      {doc.name.split(' ')[1]?.[0] || 'D'}
+                      {doc.name.split(' ')[2]?.[0] || 'R'}
+                    </div>
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-slate-900 dark:text-white font-['Outfit']">

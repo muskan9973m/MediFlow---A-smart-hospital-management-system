@@ -16,7 +16,7 @@ import {
 import { Link } from 'react-router-dom';
 import Badge from '../components/Badge';
 import BookAppointmentModal from '../components/BookAppointmentModal';
-import { MOCK_APPOINTMENTS, MOCK_DEPARTMENTS, MOCK_USER } from '../data/mockData';
+import { MOCK_APPOINTMENTS, MOCK_DEPARTMENTS, MOCK_DOCTORS, MOCK_USER } from '../data/mockData';
 import { useAuth } from '../context/AuthContext';
 import { appointmentAPI } from '../services/api';
 
@@ -298,18 +298,34 @@ export default function AppointmentsPage() {
                     </span>
                   </div>
 
-                  <div>
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white font-['Outfit']">
-                      {apt.doctorName}
-                    </h3>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
-                      <Stethoscope className="w-3.5 h-3.5 text-medical-500" />
-                      <span>{apt.specialty} • {apt.department}</span>
-                      <span className="mx-1">•</span>
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                      <span>{apt.room}</span>
-                    </p>
-                  </div>
+                  {(() => {
+                    const docInfo = MOCK_DOCTORS.find(d => d.id === apt.doctorId || d.name === apt.doctorName);
+                    const docImg = apt.doctorImage || docInfo?.image;
+                    return (
+                      <div className="flex items-center gap-3">
+                        {docImg && (
+                          <img
+                            src={docImg}
+                            alt={apt.doctorName}
+                            className="w-12 h-12 rounded-xl object-cover border border-slate-200 dark:border-slate-700 shadow-xs shrink-0"
+                            onError={(e) => { e.target.style.display = 'none'; }}
+                          />
+                        )}
+                        <div>
+                          <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white font-['Outfit']">
+                            {apt.doctorName}
+                          </h3>
+                          <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+                            <Stethoscope className="w-3.5 h-3.5 text-medical-500" />
+                            <span>{apt.specialty} • {apt.department}</span>
+                            <span className="mx-1">•</span>
+                            <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                            <span>{apt.room}</span>
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })()}
 
                   <p className="text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-750 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-700/60 max-w-2xl">
                     <span className="font-semibold text-slate-700 dark:text-slate-200">Reason: </span>

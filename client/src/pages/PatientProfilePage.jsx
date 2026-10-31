@@ -18,7 +18,8 @@ import {
   Printer,
   Plus,
   CheckCircle2,
-  Trash2
+  Trash2,
+  ClipboardList
 } from 'lucide-react';
 import Badge from '../components/Badge';
 import { MOCK_PATIENT_RECORDS } from '../data/mockData';
@@ -53,11 +54,15 @@ export default function PatientProfilePage() {
   const [isAddVitalsOpen, setIsAddVitalsOpen] = useState(false);
   const [isAddAllergyOpen, setIsAddAllergyOpen] = useState(false);
   const [isAddMedOpen, setIsAddMedOpen] = useState(false);
+  const [isAddConditionOpen, setIsAddConditionOpen] = useState(false);
+  const [isAddLabOpen, setIsAddLabOpen] = useState(false);
 
   // Form states
   const [vitalsInput, setVitalsInput] = useState({ bp: '120/80', heartRate: '72 bpm', spo2: '99%', weight: '68 kg' });
   const [allergyInput, setAllergyInput] = useState({ allergen: '', severity: 'Moderate', reaction: '' });
   const [medInput, setMedInput] = useState({ name: '', dosage: '', frequency: 'Once daily', prescribedFor: '', doctor: 'Self/Prescribed' });
+  const [conditionInput, setConditionInput] = useState({ name: '', diagnosedYear: new Date().getFullYear().toString(), status: 'Active' });
+  const [labInput, setLabInput] = useState({ title: '', department: 'Pathology', doctor: 'Dr. Sophia Patel, MBBS', status: 'Normal', results: '' });
 
   useEffect(() => {
     patientAPI.getRecords()
@@ -167,6 +172,17 @@ export default function PatientProfilePage() {
     showToast(`Allergy to ${newAllergy.allergen} added to profile.`);
   };
 
+  const handleRemoveAllergy = async (indexToRemove) => {
+    const updated = (records.allergies || []).filter((_, i) => i !== indexToRemove);
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ allergies: updated });
+      }
+    } catch (err) {}
+    setRecords(prev => ({ ...prev, allergies: updated }));
+    showToast('Allergy removed from medical profile.');
+  };
+
   const handleAddMedication = async (e) => {
     e.preventDefault();
     if (!medInput.name.trim()) return;
@@ -184,6 +200,96 @@ export default function PatientProfilePage() {
     setMedInput({ name: '', dosage: '', frequency: 'Once daily', prescribedFor: '', doctor: 'Self/Prescribed' });
     setIsAddMedOpen(false);
     showToast(`Prescription for ${newMed.name} added.`);
+  };
+
+  const handleRemoveMedication = async (indexToRemove) => {
+    const updated = (records.activeMedications || []).filter((_, i) => i !== indexToRemove);
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ activeMedications: updated });
+      }
+    } catch (err) {}
+    setRecords(prev => ({ ...prev, activeMedications: updated }));
+    showToast('Prescription regimen removed.');
+  };
+
+  const handleAddCondition = async (e) => {
+    e.preventDefault();
+    if (!conditionInput.name.trim()) return;
+
+    const newCond = { ...conditionInput };
+    const updated = [...(records.chronicConditions || []), newCond];
+
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ chronicConditions: updated });
+      }
+    } catch (err) {}
+
+    setRecords(prev => ({ ...prev, chronicConditions: updated }));
+    setConditionInput({ name: '', diagnosedYear: new Date().getFullYear().toString(), status: 'Active' });
+    setIsAddConditionOpen(false);
+    showToast(`Condition "${newCond.name}" added to medical history.`);
+  };
+
+  const handleRemoveCondition = async (indexToRemove) => {
+    const updated = (records.chronicConditions || []).filter((_, i) => i !== indexToRemove);
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ chronicConditions: updated });
+      }
+    } catch (err) {}
+    setRecords(prev => ({ ...prev, chronicConditions: updated }));
+    showToast('Condition removed from records.');
+  };
+
+  const handleRemoveVitals = async (indexToRemove) => {
+    const updated = (records.vitalsHistory || []).filter((_, i) => i !== indexToRemove);
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ vitalsHistory: updated });
+      }
+    } catch (err) {}
+    setRecords(prev => ({ ...prev, vitalsHistory: updated }));
+    showToast('Vitals entry removed.');
+  };
+
+  const handleAddLabReport = async (e) => {
+    e.preventDefault();
+    if (!labInput.title.trim()) return;
+
+    const newReport = {
+      id: `lab_${Date.now()}`,
+      title: labInput.title,
+      department: labInput.department || 'Pathology',
+      doctor: labInput.doctor || 'Dr. Sophia Patel, MBBS',
+      date: new Date().toISOString().split('T')[0],
+      status: labInput.status || 'Normal',
+      results: labInput.results || 'Parameters within normal physiological range.'
+    };
+    const updated = [newReport, ...(records.labReports || [])];
+
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ labReports: updated });
+      }
+    } catch (err) {}
+
+    setRecords(prev => ({ ...prev, labReports: updated }));
+    setLabInput({ title: '', department: 'Pathology', doctor: 'Dr. Sophia Patel, MBBS', status: 'Normal', results: '' });
+    setIsAddLabOpen(false);
+    showToast(`Diagnostic record "${newReport.title}" saved.`);
+  };
+
+  const handleRemoveLabReport = async (reportId) => {
+    const updated = (records.labReports || []).filter(r => r.id !== reportId);
+    try {
+      if (patientAPI.updateRecord) {
+        await patientAPI.updateRecord({ labReports: updated });
+      }
+    } catch (err) {}
+    setRecords(prev => ({ ...prev, labReports: updated }));
+    showToast('Diagnostic report removed.');
   };
 
   const severeAllergy = (records.allergies || []).find(a =>
@@ -431,21 +537,83 @@ export default function PatientProfilePage() {
                 records.allergies.map((all, idx) => (
                   <div
                     key={idx}
-                    className="p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-start justify-between gap-3 text-xs"
+                    className="p-3.5 rounded-2xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-200/60 dark:border-rose-900/40 flex items-start justify-between gap-3 text-xs group"
                   >
                     <div>
                       <span className="font-bold text-rose-900 dark:text-rose-200">{all.allergen}</span>
                       <p className="text-slate-600 dark:text-slate-300 text-[11px] mt-0.5">Reaction: {all.reaction || 'Not specified'}</p>
                     </div>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-200 shrink-0">
-                      {all.severity}
-                    </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 dark:bg-rose-900/60 text-rose-700 dark:text-rose-200">
+                        {all.severity}
+                      </span>
+                      <button
+                        onClick={() => handleRemoveAllergy(idx)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-100 dark:hover:bg-rose-950/50 transition-colors"
+                        title="Remove allergy"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (
                 <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-750/50 border border-dashed border-slate-200 dark:border-slate-700 text-center space-y-1">
                   <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">No drug allergies recorded</p>
                   <p className="text-[11px] text-slate-400">Clinical profile indicates no known adverse medication reactions.</p>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Chronic Conditions & Diagnoses */}
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-700 shadow-soft">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+              <div className="flex items-center gap-2">
+                <ClipboardList className="w-4 h-4 text-amber-500" />
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white font-['Outfit']">
+                  Chronic Conditions & Diagnoses
+                </h3>
+              </div>
+              <button
+                onClick={() => setIsAddConditionOpen(true)}
+                className="text-xs text-medical-600 dark:text-medical-400 hover:underline flex items-center gap-1 font-semibold"
+              >
+                <Plus className="w-3.5 h-3.5" /> Add Condition
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-3">
+              {records.chronicConditions && records.chronicConditions.length > 0 ? (
+                records.chronicConditions.map((cond, idx) => (
+                  <div
+                    key={idx}
+                    className="p-3.5 rounded-2xl bg-amber-50/40 dark:bg-amber-950/20 border border-amber-200/60 dark:border-amber-900/40 flex items-center justify-between gap-3 text-xs"
+                  >
+                    <div>
+                      <span className="font-bold text-amber-950 dark:text-amber-200">{cond.name}</span>
+                      <p className="text-slate-500 dark:text-slate-400 text-[11px] mt-0.5">
+                        Diagnosed: {cond.diagnosedYear || 'Recorded'} • Status: <span className="font-semibold text-slate-700 dark:text-slate-300">{cond.status || 'Managed'}</span>
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200">
+                        {cond.status || 'Active'}
+                      </span>
+                      <button
+                        onClick={() => handleRemoveCondition(idx)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-amber-600 hover:bg-amber-100 dark:hover:bg-amber-950/50 transition-colors"
+                        title="Remove condition"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-750/50 border border-dashed border-slate-200 dark:border-slate-700 text-center space-y-1">
+                  <p className="text-xs font-semibold text-slate-600 dark:text-slate-300">No chronic conditions listed</p>
+                  <p className="text-[11px] text-slate-400">Add long-term conditions (e.g. Asthma, Hypertension, Diabetes) for physician reference.</p>
                 </div>
               )}
             </div>
@@ -488,7 +656,16 @@ export default function PatientProfilePage() {
                         {med.frequency} {med.prescribedFor && `• For: ${med.prescribedFor}`}
                       </p>
                     </div>
-                    <span className="text-[10px] text-slate-400">{med.doctor}</span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="text-[10px] text-slate-400">{med.doctor}</span>
+                      <button
+                        onClick={() => handleRemoveMedication(idx)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                        title="Remove medication"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -524,14 +701,23 @@ export default function PatientProfilePage() {
           <div className="mt-4 divide-y divide-slate-100 dark:divide-slate-750">
             {records.vitalsHistory && records.vitalsHistory.length > 0 ? (
               records.vitalsHistory.map((v, idx) => (
-                <div key={idx} className="py-3 flex items-center justify-between text-xs">
+                <div key={idx} className="py-3 flex items-center justify-between text-xs group">
                   <div>
                     <span className="font-bold text-slate-800 dark:text-slate-200 block">{v.date}</span>
                     <span className="text-[11px] text-slate-400">Weight: {v.weight}</span>
                   </div>
-                  <div className="text-right space-y-0.5">
-                    <div className="font-mono font-bold text-slate-900 dark:text-white">BP: {v.bp}</div>
-                    <div className="text-[11px] text-slate-400">HR: {v.heartRate} • SpO2: {v.spo2}</div>
+                  <div className="flex items-center gap-3">
+                    <div className="text-right space-y-0.5">
+                      <div className="font-mono font-bold text-slate-900 dark:text-white">BP: {v.bp}</div>
+                      <div className="text-[11px] text-slate-400">HR: {v.heartRate} • SpO2: {v.spo2}</div>
+                    </div>
+                    <button
+                      onClick={() => handleRemoveVitals(idx)}
+                      className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                      title="Delete vitals"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
                   </div>
                 </div>
               ))
@@ -546,11 +732,19 @@ export default function PatientProfilePage() {
 
         {/* Diagnostic Lab Reports (7 cols) */}
         <div className="lg:col-span-7 bg-white dark:bg-slate-800 rounded-3xl p-6 border border-slate-200/80 dark:border-slate-700 shadow-soft">
-          <div className="flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-700">
-            <FileText className="w-4 h-4 text-medical-600 dark:text-medical-400" />
-            <h3 className="text-sm font-bold text-slate-900 dark:text-white font-['Outfit']">
-              Diagnostic Lab & Pathology Records
-            </h3>
+          <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-700">
+            <div className="flex items-center gap-2">
+              <FileText className="w-4 h-4 text-medical-600 dark:text-medical-400" />
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white font-['Outfit']">
+                Diagnostic Lab & Pathology Records
+              </h3>
+            </div>
+            <button
+              onClick={() => setIsAddLabOpen(true)}
+              className="text-xs text-medical-600 dark:text-medical-400 hover:underline flex items-center gap-1 font-semibold"
+            >
+              <Plus className="w-3.5 h-3.5" /> Record Lab Test
+            </button>
           </div>
 
           <div className="mt-4 space-y-3.5">
@@ -562,9 +756,18 @@ export default function PatientProfilePage() {
                 >
                   <div className="flex items-center justify-between">
                     <h4 className="font-bold text-slate-900 dark:text-white">{report.title}</h4>
-                    <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
-                      {report.status}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 dark:bg-emerald-950/60 text-emerald-700 dark:text-emerald-300">
+                        {report.status}
+                      </span>
+                      <button
+                        onClick={() => handleRemoveLabReport(report.id)}
+                        className="p-1 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                        title="Remove report"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
                   </div>
 
                   <div className="flex items-center gap-3 text-[11px] text-slate-400">
@@ -804,6 +1007,162 @@ export default function PatientProfilePage() {
                   className="px-4 py-2 rounded-xl bg-medical-600 hover:bg-medical-700 text-white font-semibold"
                 >
                   Add Medication
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Chronic Condition Modal */}
+      {isAddConditionOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-700">
+              <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <ClipboardList className="w-4 h-4 text-amber-500" /> Record Chronic Condition
+              </h3>
+              <button onClick={() => setIsAddConditionOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <form onSubmit={handleAddCondition} className="space-y-3 text-xs">
+              <div>
+                <label className="text-slate-500 block mb-1">Condition / Diagnosis Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Hypertension, Asthma, Type 2 Diabetes"
+                  value={conditionInput.name}
+                  onChange={e => setConditionInput({ ...conditionInput, name: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-500 block mb-1">Year Diagnosed</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. 2021"
+                    value={conditionInput.diagnosedYear}
+                    onChange={e => setConditionInput({ ...conditionInput, diagnosedYear: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                  />
+                </div>
+                <div>
+                  <label className="text-slate-500 block mb-1">Clinical Status</label>
+                  <select
+                    value={conditionInput.status}
+                    onChange={e => setConditionInput({ ...conditionInput, status: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                  >
+                    <option value="Active">Active</option>
+                    <option value="Managed">Managed</option>
+                    <option value="In Remission">In Remission</option>
+                  </select>
+                </div>
+              </div>
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddConditionOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-semibold"
+                >
+                  Save Condition
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Diagnostic Lab Report Modal */}
+      {isAddLabOpen && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-800 rounded-3xl p-6 max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-700 space-y-4">
+            <div className="flex items-center justify-between border-b pb-3 border-slate-100 dark:border-slate-700">
+              <h3 className="font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <FileText className="w-4 h-4 text-medical-600" /> Record Diagnostic Lab Report
+              </h3>
+              <button onClick={() => setIsAddLabOpen(false)} className="text-slate-400 hover:text-slate-600">
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <form onSubmit={handleAddLabReport} className="space-y-3 text-xs">
+              <div>
+                <label className="text-slate-500 block mb-1">Test Title / Panel</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Complete Blood Count (CBC) Panel"
+                  value={labInput.title}
+                  onChange={e => setLabInput({ ...labInput, title: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                  required
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-slate-500 block mb-1">Department</label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Pathology, Cardiology"
+                    value={labInput.department}
+                    onChange={e => setLabInput({ ...labInput, department: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                  />
+                </div>
+                <div>
+                  <label className="text-slate-500 block mb-1">Status</label>
+                  <select
+                    value={labInput.status}
+                    onChange={e => setLabInput({ ...labInput, status: e.target.value })}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                  >
+                    <option value="Normal">Normal</option>
+                    <option value="Borderline">Borderline</option>
+                    <option value="Attention Needed">Attention Needed</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="text-slate-500 block mb-1">Ordering Physician</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Dr. Sarah Jenkins, MD"
+                  value={labInput.doctor}
+                  onChange={e => setLabInput({ ...labInput, doctor: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200"
+                />
+              </div>
+              <div>
+                <label className="text-slate-500 block mb-1">Results Summary</label>
+                <textarea
+                  rows={3}
+                  placeholder="e.g. Hemoglobin: 14.2 g/dL. Platelets normal. No abnormalities detected."
+                  value={labInput.results}
+                  onChange={e => setLabInput({ ...labInput, results: e.target.value })}
+                  className="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-750 text-slate-800 dark:text-slate-200 resize-none"
+                />
+              </div>
+              <div className="pt-2 flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={() => setIsAddLabOpen(false)}
+                  className="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 rounded-xl bg-medical-600 hover:bg-medical-700 text-white font-semibold"
+                >
+                  Save Lab Report
                 </button>
               </div>
             </form>

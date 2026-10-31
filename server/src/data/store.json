@@ -4,7 +4,7 @@
       "id": "pat_9812",
       "name": "Muskan Singh",
       "email": "muskan.singh@example.com",
-      "password": "$2b$10$cFkiOFktskEBOxlRkO4otOms/JJGLoaChRjcQNrE2s8tH55xUrv22",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
       "role": "patient",
       "phone": "+1 (555) 382-9014",
       "bloodGroup": "O+",
@@ -17,7 +17,7 @@
       "id": "doc_101",
       "name": "Dr. Sarah Jenkins, MD",
       "email": "sarah.jenkins@mediflow.org",
-      "password": "$2b$10$cFkiOFktskEBOxlRkO4otOms/JJGLoaChRjcQNrE2s8tH55xUrv22",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
       "role": "doctor",
       "phone": "+1 (555) 234-8891",
       "specialty": "Cardiologist",
@@ -39,7 +39,7 @@
       "id": "doc_102",
       "name": "Dr. Marcus Chen, MD, PhD",
       "email": "marcus.chen@mediflow.org",
-      "password": "$2b$10$cFkiOFktskEBOxlRkO4otOms/JJGLoaChRjcQNrE2s8tH55xUrv22",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
       "role": "doctor",
       "phone": "+1 (555) 345-9912",
       "specialty": "Neurologist",
@@ -61,7 +61,7 @@
       "id": "doc_103",
       "name": "Dr. Sophia Patel, MBBS, MD",
       "email": "sophia.patel@mediflow.org",
-      "password": "$2b$10$cFkiOFktskEBOxlRkO4otOms/JJGLoaChRjcQNrE2s8tH55xUrv22",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
       "role": "doctor",
       "phone": "+1 (555) 456-1234",
       "specialty": "General Physician",
@@ -85,7 +85,7 @@
       "id": "doc_104",
       "name": "Dr. Rachel Adams, MS",
       "email": "rachel.adams@mediflow.org",
-      "password": "$2b$10$cFkiOFktskEBOxlRkO4otOms/JJGLoaChRjcQNrE2s8tH55xUrv22",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
       "role": "doctor",
       "phone": "+1 (555) 567-4321",
       "specialty": "Orthopedic Surgeon",
@@ -104,10 +104,55 @@
       "bio": "Specializes in joint restoration, sports injury rehabilitation, and bone trauma."
     },
     {
+      "id": "doc_105",
+      "name": "Dr. David Kim, MD, FAAP",
+      "email": "david.kim@mediflow.org",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
+      "role": "doctor",
+      "phone": "+1 (555) 678-9012",
+      "specialty": "Pediatrician",
+      "department": "Pediatrics",
+      "experience": "12 years",
+      "rating": 4.9,
+      "reviewsCount": 220,
+      "consultationDurationMin": 15,
+      "availableDays": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "09:00 AM - 01:00 PM",
+      "room": "Room 102 - Wing B",
+      "bio": "Compassionate pediatrician committed to infant wellness, developmental screenings, and immunizations."
+    },
+    {
+      "id": "doc_106",
+      "name": "Dr. Liam Walker, MD",
+      "email": "liam.walker@mediflow.org",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
+      "role": "doctor",
+      "phone": "+1 (555) 789-0123",
+      "specialty": "Dermatologist",
+      "department": "Dermatology",
+      "experience": "10 years",
+      "rating": 4.8,
+      "reviewsCount": 165,
+      "consultationDurationMin": 20,
+      "availableDays": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "availableTime": "10:30 AM - 03:30 PM",
+      "room": "Room 208 - Wing A",
+      "bio": "Specialist in dermatological treatments, acne therapies, mole evaluations, and skin allergy management."
+    },
+    {
       "id": "adm_001",
       "name": "Chief Admin Reynolds",
       "email": "admin@mediflow.org",
-      "password": "$2b$10$cFkiOFktskEBOxlRkO4otOms/JJGLoaChRjcQNrE2s8tH55xUrv22",
+      "password": "$2b$10$QinxWt.nd8wg09rxR1LD0OJUWEsKsK9NAUG2GytZKc3950tkJEVGC",
       "role": "admin",
       "phone": "+1 (555) 999-0011",
       "department": "Hospital Administration"
@@ -188,7 +233,8 @@
       ],
       "availableTime": "09:00 AM - 02:00 PM",
       "room": "Room 204 - Wing B",
-      "bio": "Board-certified cardiologist specializing in preventive cardiology and heart rhythm disorders."
+      "bio": "Board-certified cardiologist specializing in preventive cardiology and heart rhythm disorders.",
+      "image": "/doctors/dr_sarah_jenkins.jpg"
     },
     {
       "id": "doc_102",
@@ -208,7 +254,8 @@
       ],
       "availableTime": "10:00 AM - 03:00 PM",
       "room": "Room 312 - Wing A",
-      "bio": "Expert in neuro-diagnostics, migraines, and cognitive wellness therapy."
+      "bio": "Expert in neuro-diagnostics, migraines, and cognitive wellness therapy.",
+      "image": "/doctors/dr_marcus_chen.jpg"
     },
     {
       "id": "doc_103",
@@ -230,7 +277,8 @@
       ],
       "availableTime": "08:30 AM - 01:30 PM",
       "room": "OPD Desk 4",
-      "bio": "Primary care physician dedicated to routine check-ups and chronic symptom control."
+      "bio": "Primary care physician dedicated to routine check-ups and chronic symptom control.",
+      "image": "/doctors/dr_sophia_patel.jpg"
     },
     {
       "id": "doc_104",
@@ -250,12 +298,143 @@
       ],
       "availableTime": "11:00 AM - 04:00 PM",
       "room": "Room 108 - Wing C",
-      "bio": "Specializes in joint restoration, sports injury rehabilitation, and bone trauma."
+      "bio": "Specializes in joint restoration, sports injury rehabilitation, and bone trauma.",
+      "image": "/doctors/dr_rachel_adams.jpg"
+    },
+    {
+      "id": "doc_105",
+      "userId": "doc_105",
+      "name": "Dr. David Kim, MD, FAAP",
+      "email": "david.kim@mediflow.org",
+      "specialty": "Pediatrician",
+      "department": "Pediatrics",
+      "experience": "12 years",
+      "rating": 4.9,
+      "reviewsCount": 220,
+      "consultationDurationMin": 15,
+      "availableDays": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Friday"
+      ],
+      "availableTime": "09:00 AM - 01:00 PM",
+      "room": "Room 102 - Wing B",
+      "bio": "Compassionate pediatrician committed to infant wellness, developmental screenings, and immunizations.",
+      "image": "/doctors/dr_david_kim.jpg"
+    },
+    {
+      "id": "doc_106",
+      "userId": "doc_106",
+      "name": "Dr. Liam Walker, MD",
+      "email": "liam.walker@mediflow.org",
+      "specialty": "Dermatologist",
+      "department": "Dermatology",
+      "experience": "10 years",
+      "rating": 4.8,
+      "reviewsCount": 165,
+      "consultationDurationMin": 20,
+      "availableDays": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday"
+      ],
+      "availableTime": "10:30 AM - 03:30 PM",
+      "room": "Room 208 - Wing A",
+      "bio": "Specialist in dermatological treatments, acne therapies, mole evaluations, and skin allergy management.",
+      "image": "/doctors/dr_liam_walker.jpg"
     }
   ],
-  "appointments": [],
-  "queue": [],
-  "notifications": [],
+  "appointments": [
+    {
+      "id": "apt_1793453537465",
+      "refNumber": "MF-2026-9634",
+      "patientId": "pat_9812",
+      "patientName": "Muskan Singh",
+      "patientEmail": "muskan.singh@example.com",
+      "doctorId": "doc_104",
+      "doctorName": "Dr. Rachel Adams, MS",
+      "specialty": "Orthopedic Surgeon",
+      "department": "Orthopedics",
+      "date": "2026-11-06",
+      "time": "09:00 AM",
+      "reason": "Knees pain",
+      "status": "confirmed",
+      "room": "Room 108 - Wing C",
+      "queueToken": "O-24",
+      "createdDate": "2026-10-31"
+    },
+    {
+      "id": "apt_1793453993514",
+      "refNumber": "MF-2026-9879",
+      "patientId": "pat_9812",
+      "patientName": "Muskan Singh",
+      "patientEmail": "muskan.singh@example.com",
+      "doctorId": "doc_104",
+      "doctorName": "Dr. Rachel Adams, MS",
+      "specialty": "Orthopedic Surgeon",
+      "department": "Orthopedics",
+      "date": "2026-11-04",
+      "time": "10:15 AM",
+      "reason": "bones pain",
+      "status": "confirmed",
+      "room": "Room 108 - Wing C",
+      "queueToken": "O-78",
+      "createdDate": "2026-10-31"
+    }
+  ],
+  "queue": [
+    {
+      "id": "q_1793453537466",
+      "token": "O-24",
+      "department": "Orthopedics",
+      "doctorId": "doc_104",
+      "doctorName": "Dr. Rachel Adams, MS",
+      "patientId": "pat_9812",
+      "patientName": "Muskan Singh",
+      "age": 29,
+      "gender": "Patient",
+      "status": "waiting",
+      "triageLevel": "Normal",
+      "appointmentTime": "09:00 AM",
+      "visitReason": "Knees pain",
+      "vitals": {
+        "bp": "120/80",
+        "heartRate": "72 bpm",
+        "spo2": "99%",
+        "temp": "98.6°F"
+      },
+      "allergies": [],
+      "pastVisits": 1,
+      "notes": "Booked via MediFlow Portal",
+      "order": 1
+    },
+    {
+      "id": "q_1793453993515",
+      "token": "O-78",
+      "department": "Orthopedics",
+      "doctorId": "doc_104",
+      "doctorName": "Dr. Rachel Adams, MS",
+      "patientId": "pat_9812",
+      "patientName": "Muskan Singh",
+      "age": 29,
+      "gender": "Patient",
+      "status": "waiting",
+      "triageLevel": "Normal",
+      "appointmentTime": "10:15 AM",
+      "visitReason": "bones pain",
+      "vitals": {
+        "bp": "120/80",
+        "heartRate": "72 bpm",
+        "spo2": "99%",
+        "temp": "98.6°F"
+      },
+      "allergies": [],
+      "pastVisits": 1,
+      "notes": "Booked via MediFlow Portal",
+      "order": 2
+    }
+  ],
   "records": {
     "pat_9812": {
       "patientId": "pat_9812",
@@ -281,6 +460,26 @@
       "labReports": []
     }
   },
+  "notifications": [
+    {
+      "id": "notif_1793453537466",
+      "userId": "pat_9812",
+      "title": "Appointment Booked",
+      "message": "Your appointment with Dr. Rachel Adams, MS (Orthopedics) is confirmed for 2026-11-06 at 09:00 AM. Token: O-24",
+      "time": "Just now",
+      "read": false,
+      "type": "appointment"
+    },
+    {
+      "id": "notif_1793453993515",
+      "userId": "pat_9812",
+      "title": "Appointment Booked",
+      "message": "Your appointment with Dr. Rachel Adams, MS (Orthopedics) is confirmed for 2026-11-04 at 10:15 AM. Token: O-78",
+      "time": "Just now",
+      "read": false,
+      "type": "appointment"
+    }
+  ],
   "triageRules": [
     {
       "id": "sym_chest",
@@ -296,7 +495,7 @@
       "recommendation": "Emergency / Cardiology OPD",
       "primaryDept": "Cardiology",
       "suggestedDoctor": "Dr. Sarah Jenkins, MD",
-      "guidance": "\u26a0\ufe0f Sudden severe chest pressure or radiating pain requires IMMEDIATE emergency triage. For mild or intermittent palpitations without distress, consult Cardiology OPD."
+      "guidance": "⚠️ Sudden severe chest pressure or radiating pain requires IMMEDIATE emergency triage. For mild or intermittent palpitations without distress, consult Cardiology OPD."
     },
     {
       "id": "sym_neuro",
@@ -421,7 +620,7 @@
         "ambulance",
         "serious"
       ],
-      "answer": "\u26a0\ufe0f If you or someone nearby is experiencing a life-threatening medical emergency (chest pain, shortness of breath, severe trauma), please call your local emergency number (e.g. 911 / 112) or head immediately to our 24/7 Emergency Wing."
+      "answer": "⚠️ If you or someone nearby is experiencing a life-threatening medical emergency (chest pain, shortness of breath, severe trauma), please call your local emergency number (e.g. 911 / 112) or head immediately to our 24/7 Emergency Wing."
     },
     {
       "keywords": [
