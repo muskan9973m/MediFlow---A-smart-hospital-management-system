@@ -11,7 +11,7 @@ export const getAdminAnalytics = (req, res) =>{
     const waitingPatients = queue.filter(q => q.status === 'waiting').length;
 
     //Aggregate department stats dynamically
-    const departmentStats = departments.map(d => {
+    const departmentStats = departments.map(d =>{
       const deptQueue = queue.filter(q => q.department.toLowerCase() === d.name.toLowerCase() && q.status === 'waiting');
       const deptDocs = doctors.filter(doc => doc.department.toLowerCase() === d.name.toLowerCase()).length || 1;
       return {
