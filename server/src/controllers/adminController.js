@@ -23,7 +23,7 @@ export const getAdminAnalytics = (req, res) =>{
       };
     });
 
-    // Dynamic KPI summary
+    //Dynamic KPI summary
     const kpis = {
       totalPatientsToday: 248 + appointments.length,
       activeConsultations: activeConsultations || 6,
