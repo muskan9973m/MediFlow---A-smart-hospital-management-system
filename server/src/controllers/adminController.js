@@ -1,6 +1,6 @@
 import { db } from '../config/db.js';
 
-export const getAdminAnalytics = (req, res) => {
+export const getAdminAnalytics = (req, res) =>{
   try {
     const queue = db.get('queue');
     const appointments = db.get('appointments');
